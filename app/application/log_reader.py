@@ -31,7 +31,7 @@ class LogReaderStage(PipelineStage):
         except FileNotFoundError:
             print(f"[ERROR] {self.name}]: файл не найден - {self.filepath}")
         finally:
-            for _ in range(self.count_consumer):
+            for _ in range(self.num_consumer):
                 self.output_queue.put(None)
             print(f"[OK] обработка в процессе {os.getpid()} завершена, "
-                  f"передано {self.count_consumer} стоп-сигналов")
+                  f"передано {self.num_consumer} стоп-сигналов")
