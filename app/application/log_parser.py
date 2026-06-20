@@ -18,11 +18,11 @@ class LogParserStage(PipelineStage):
 
     def start(self):
         for i in range(self.num_workers):
-            p = Process(target=self._parser_worker, args=(i,), name=f'{self.name}_{i}')
+            p = Process(target=self._parser_worker, name=f'{self.name}_{i}')
             p.start()
             self._workers.append(p)
 
-    def _parser_worker(self, worker_id: int):
+    def _parser_worker(self):
         pid = os.getpid()
         processed_chunk: int = 0
         print(f'{self.name} pid: {pid} запущен')
