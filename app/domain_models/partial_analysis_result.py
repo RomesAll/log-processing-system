@@ -10,5 +10,5 @@ class PartialAnalysisResult:
     counter_url: dict[str, int] = field(default_factory=dict)
     counter_status: dict[str, int] = field(default_factory=dict)
     total_size: int = field(default=0)
-    error_ips: list[str] = field(default_factory=list)
+    error_ips: set = field(default_factory=list)
     sample_entries: list['LogEntry'] = field(default_factory=list)
