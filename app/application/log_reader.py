@@ -5,7 +5,7 @@ import os
 class LogReaderStage(PipelineStage):
 
     def __init__(self, filepath: str, output_queue: Queue,
-                 chunk_size: int = 10_000, num_consumer: int | None = None):
+                 chunk_size: int = 5_000, num_consumer: int | None = None):
         super().__init__('LogReader')
         self.filepath = filepath
         self.output_queue = output_queue
@@ -22,7 +22,7 @@ class LogReaderStage(PipelineStage):
             with open(self.filepath) as file:
                 chunk = []
                 for line in file:
-                    chunk.append(line)
+                    chunk.append(line.strip())
                     if len(chunk) >= self.chunk_size:
                         self.output_queue.put(chunk)
                         chunk = []
