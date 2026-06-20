@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from domain_models.log_entry import LogEntry
+    from app.domain_models.log_entry import LogEntry
 
 @dataclass
 class PartialAnalysisResult:
