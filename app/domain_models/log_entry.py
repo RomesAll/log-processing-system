@@ -1,50 +1,24 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 import re
 
-pattern_log_string = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) (\w*|-) (\w*|-) (\[[\S ]*\]) \"(\w+) (\/\S*) (\w*)\/([0-9\.]*)\" (\d*) (\d*) \"(\S*)\" \"([\S ]*)\"')
-
 class LogEntry(BaseModel):
-    ipv4: str = Field(
-        pattern=r'^(\d{1,3}\.){3}\d{1,3}$'
-    )
-    ident: str = Field(
-        pattern=r'^\w*|-$'
-    )
-    auth_user: str = Field(
-        pattern=r'^\w*|-$'
-    )
-    timestamp: str = Field(
-        pattern=r'^\[[0-9]{1,2}[\/.][a-zA-Z]{2,4}[\/.]\d{4}\:\d{1,2}\:\d{1,2}\:\d{1,2} \+\d{1,6}\]$'
-    )
-    http_method: str = Field(
-        pattern=r'^POST|GET|PUT|DELETE|OPTIONS$'
-    )
-    url: str = Field(
-        pattern=r'^\/[a-zA-Z?=0-9\/]*$'
-    )
-    protocol: str = Field(
-        pattern=r'^[A-Z]*$'
-    )
-    protocol_version: str = Field(
-        pattern=r'^[0-9]\.[0-9]$'
-    )
-    status_code: str = Field(
-        pattern=r'^\d{3}$'
-    )
-    size_byte: str = Field(
-        pattern=r'^\d*$'
-    )
-    referer: str = Field(
-        pattern=r'^[a-z0-9A-Z\.:\/?=а-я+\-]*$'
-    )
-    user_agent: str = Field(
-        pattern=r'^[a-zA-Z\/0-9\. \(;\),]*$'
-    )
+    ipv4: str = Field(pattern=r'^(\d{1,3}\.){3}\d{1,3}$')
+    ident: str = Field(pattern=r'^\w*|-$')
+    auth_user: str = Field(pattern=r'^\w*|-$')
+    timestamp: str = Field(pattern=r'^\[[0-9]{1,2}[\/.][a-zA-Z]{2,4}[\/.]\d{4}\:\d{1,2}\:\d{1,2}\:\d{1,2} \+\d{1,6}\]$')
+    http_method: str = Field(pattern=r'^POST|GET|PUT|DELETE|OPTIONS$')
+    url: str = Field(pattern=r'^\/[a-zA-Z?=0-9\/\.]*$')
+    protocol: str = Field(pattern=r'^[A-Z]*$')
+    protocol_version: str = Field(pattern=r'^[0-9]\.[0-9]$')
+    status_code: str = Field(pattern=r'^\d{3}$')
+    size_byte: str = Field(pattern=r'^\d*$')
+    referer: str = Field(pattern=r'^[a-z0-9A-Z\.:\/?=а-я+\-]*$')
+    user_agent: str = Field(pattern=r'^[\S ]*$')
 
     @classmethod
     def from_line(cls,
                   line: str,
-                  pattern: re.Pattern = pattern_log_string) -> "LogEntry | None":
+                  pattern: re.Pattern) -> "LogEntry | None":
         """Фабричный метод для создания LogEntry из строки"""
         match = pattern.search(line)
         if not match:
